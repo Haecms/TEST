@@ -261,6 +261,7 @@
             this.grid1.UpdateMode = Infragistics.Win.UltraWinGrid.UpdateMode.OnCellChange;
             this.grid1.UseFlatMode = Infragistics.Win.DefaultableBoolean.True;
             this.grid1.UseOsThemes = Infragistics.Win.DefaultableBoolean.False;
+            this.grid1.CellListSelect += new Infragistics.Win.UltraWinGrid.CellEventHandler(this.grid1_CellListSelect);
             // 
             // dtpStart
             // 

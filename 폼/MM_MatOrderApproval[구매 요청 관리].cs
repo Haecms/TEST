@@ -17,7 +17,8 @@ using System.Windows.Forms;
  * 작성일자 : 2023-08-08
  * 설명     : 현장발주내역 승인
  * ***********************************************************************************************************
- * 수정 이력 :
+ * 수정 이력 : 이름 변경 -> 구매 요청 관리
+ * 수정 날짜 : 2023-08-12
  * 
  * 
  * ***********************************************************************************************************/
@@ -40,13 +41,14 @@ namespace KDTB_FORMS
             _GridUtil.InitColumnUltraGrid(grid1, "CHK"      , "승인"        , GridColDataType_emu.CheckBox    , 80 , HAlign.Left  , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "PLANTCODE", "공장"        , GridColDataType_emu.VarChar     , 130, HAlign.Left  , true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "REQDATE"  , "요청일자"    , GridColDataType_emu.YearMonthDay, 130, HAlign.Center, true, false);
-            _GridUtil.InitColumnUltraGrid(grid1, "ITEMCODE" , "품목"        , GridColDataType_emu.VarChar     , 100, HAlign.Left  , true, false);
-            _GridUtil.InitColumnUltraGrid(grid1, "ITEMNAME" , "품명"        , GridColDataType_emu.VarChar     , 100, HAlign.Left  , true, false);
-            _GridUtil.InitColumnUltraGrid(grid1, "REQQTY"   , "발주요청수량", GridColDataType_emu.Double      , 100, HAlign.Right , true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "ITEMCODE" , "품목"        , GridColDataType_emu.VarChar     , 200, HAlign.Left  , true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "REQQTY"   , "발주요청수량", GridColDataType_emu.Double      , 100, HAlign.Right , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "UNITCODE" , "단위"        , GridColDataType_emu.VarChar     , 100, HAlign.Center, true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "CUSTNAME" , "거래처"      , GridColDataType_emu.VarChar     , 100, HAlign.Left  , true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "MAKER"    , "발주요청자"  , GridColDataType_emu.VarChar     , 130, HAlign.Center, true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "MAKEDATE" , "요청일시"    , GridColDataType_emu.DateTime24  , 130, HAlign.Left  , true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "EDITOR"   , "수정자"      , GridColDataType_emu.VarChar     , 130, HAlign.Center, true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "EDITDATE" , "수정일시"    , GridColDataType_emu.DateTime24  , 130, HAlign.Left  , true, false);
             _GridUtil.SetInitUltraGridBind(grid1);
 
             // 콤보박스 셋팅
@@ -145,7 +147,7 @@ namespace KDTB_FORMS
                     {
                         continue;
                     }
-
+                    
                     string sPlantcode = Convert.ToString(row["PLANTCODE"]);
                     string sItemcode  = Convert.ToString(row["ITEMCODE"]);
                     int iPOQTY        = Convert.ToInt32(row["REQQTY"]);
@@ -251,7 +253,61 @@ namespace KDTB_FORMS
         */
         }
 
-   
+        public override void DoNew()
+        {
+            grid1.InsertRow();
+
+            grid1.ActiveRow.Cells["PLANTCODE"].Value = LoginInfo.PlantCode;                 // 공장 : 로그인 할 때 당시의 플랜트코드값이 셋팅됨
+            grid1.ActiveRow.Cells["REQDATE"].Value   = DateTime.Now.ToString("yyyy-MM-dd");
+            grid1.ActiveRow.Cells["MAKER"].Value     = LoginInfo.UserID;
+            grid1.ActiveRow.Cells["CHK"].Value       = 0;
+
+            grid1.ActiveRow.Cells["PLANTCODE"].Activation = Activation.NoEdit;
+            grid1.ActiveRow.Cells["REQDATE"].Activation   = Activation.NoEdit;
+            grid1.ActiveRow.Cells["UNITCODE"].Activation  = Activation.NoEdit;
+            grid1.ActiveRow.Cells["CUSTNAME"].Activation  = Activation.NoEdit;
+            grid1.ActiveRow.Cells["MAKEDATE"].Activation  = Activation.NoEdit;
+            grid1.ActiveRow.Cells["MAKER"].Activation     = Activation.NoEdit;
+            grid1.ActiveRow.Cells["EDITOR"].Activation    = Activation.NoEdit;
+            grid1.ActiveRow.Cells["EDITDATE"].Activation  = Activation.NoEdit;
+
+            
+        }
+
+        private void grid1_FilterCellValueChanged(object sender, FilterCellValueChangedEventArgs e)
+        {
+
+        }
+
+        private void grid1_CellListSelect(object sender, CellEventArgs e)
+        {
+            if (null != e.Cell.Column.ValueList)
+            {
+                // e.Cell.Text ==> "[KDTB02-ROH] 베어링 볼"
+                string sCellValue = e.Cell.Text;
+                int iSindex = sCellValue.IndexOf('[');
+                int iFindex = sCellValue.IndexOf(']');
+                string sItemcode = sCellValue.Substring(iSindex + 1, iFindex - iSindex - 1);
+
+                DBHelper helper = new DBHelper();
+                try
+                {
+                    DataTable dtTemp = new DataTable();
+                    dtTemp = helper.FillTable("_1JO_MM_MatOrderApproval_U1", CommandType.StoredProcedure
+                                             , helper.CreateParameter("@ITEMCODE", sItemcode));
+                    grid1.ActiveRow.Cells["UNITCODE"].Value = dtTemp.Rows[0]["EA"].ToString();
+                    grid1.ActiveRow.Cells["CUSTNAME"].Value = dtTemp.Rows[0]["CUSTNAME"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    ShowDialog(ex.ToString());
+                }
+                finally
+                {
+                    helper.Close();
+                }
+            }
+        }
 
     }
 }
