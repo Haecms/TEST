@@ -15,7 +15,7 @@ def get_itemcode():
     sql += "  SELECT ITEMCODE "
     sql += "        ,ITEMNAME "
     sql += "    FROM TB_ItemMaster "
-    sql += "   WHERE ITEMTYPE LIKE '%ROH%' "
+    sql += "   WHERE ITEMTYPE LIKE '%'+ 'ROH' + '%' "
     sql += "ORDER BY ITEMNAME, ITEMCODE "
     cur.execute(sql)
     rows = cur.fetchall()
@@ -27,6 +27,7 @@ def get_itemcode():
     # new_list = [item[0] for item in rows]
     return new_list
 
+# 테이블 표에 나타날 데이터 가져오기
 def get_current(selected_option):
     rows = []
     con = pymssql.connect(#server="192.168.0.112:1433",
@@ -39,7 +40,7 @@ def get_current(selected_option):
     cur=con.cursor()
     sql = ""
     sql += "   SELECT A.ITEMCODE, B.CUR_STOCKQTY, A.SAFESTOCK, A.APPRSTOCK"
-    sql += " FROM TB_ItemMaster A WITH(NOLOCK) LEFT JOIN (SELECT SUM(STOCKQTY) AS CUR_STOCKQTY"
+    sql += "     FROM TB_ItemMaster A WITH(NOLOCK) LEFT JOIN (SELECT SUM(STOCKQTY) AS CUR_STOCKQTY"
     sql += "									             ,ITEMCODE"
     sql += "								    	     FROM TB_StockMM"
     sql += f"								    		WHERE ITEMCODE = '{selected_option}'"
@@ -118,7 +119,7 @@ def autu_enroll(input_data, input_Qty = 1000):
         sql += "   FROM TB_OrderRequestList WITH(NOLOCK)  "
         sql += "  WHERE PLANTCODE = '1000'  "
         sql += "    AND ReqDATE   = @LS_NOWDATE  "
-        sql += " SELECT @LS_MAKER = B.WORKERNAME  "
+        sql += " SELECT @LS_MAKER = B.WORKERID  "
         sql += "   FROM TP_WorkcenterStatus A WITH(NOLOCK) JOIN TB_WorkerList B WITH(NOLOCK)  "
         sql += "                                             ON A.WORKER = B.WORKERID  "
         sql += "  WHERE A.PLANTCODE = '1000'  "
@@ -130,3 +131,34 @@ def autu_enroll(input_data, input_Qty = 1000):
     con.commit()
     con.close()
     return '발주 등록을 완료하였습니다.'
+
+def enroll_check(input_data):
+    a = []
+    try:
+        con = pymssql.connect(#server="192.168.0.112:1433",
+                        #   host='localhost',
+                          server = "222.235.141.8:1111",
+                          database="KDTB03_1JO",
+                          user="KDTB03",
+                          password="333538",
+                          charset = "EUC-KR") # 글자 꺠짐 방지
+        cur=con.cursor()
+        sql = ""
+        sql +="    SELECT SUM(POQTY)AS POQTY"
+        sql +="      FROM TB_MaterialOrder"
+        sql +=f"     WHERE ITEMCODE = '{input_data}'"
+        sql +=f"       AND UNITCODE = 'EA'"
+        sql +="UNION ALL "
+        sql += "SELECT SUM(ReqQTY) AS POQTY"
+        sql += "  FROM TB_OrderRequestList"
+        sql += f" WHERE ITEMCODE = '{input_data}'"
+        sql += "    AND UNITCODE = 'EA'"
+        cur.execute(sql)
+        rows = cur.fetchall()
+        a.append(rows[0])
+        a.append(rows[1])
+        con.close()
+    except:
+        a = 0
+        con.close()
+    return a
