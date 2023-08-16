@@ -109,8 +109,9 @@ def auto_enroll(itemcode, autoqty, WorkerID):
         sql+= " DECLARE @LD_NOWDATE DATETIME "
         sql+= "        ,@LS_NOWDATE VARCHAR(10) "
         sql+= "        ,@LI_ReqSEQ  INT "
-        sql+= "        ,@LS_UNITCODE VARCHAR(10)"
-        sql+= "        ,@LS_CUSTCODE VARCHAR(30)"
+        sql+= "        ,@LS_UNITCODE VARCHAR(10) "
+        sql+= "        ,@LS_CUSTCODE VARCHAR(30) "
+        sql+= "        ,@LS_PONO VARCHAR(20) "
         sql+= ""
         sql+= " SET @LD_NOWDATE = GETDATE()  "
         sql+= " SET @LS_NOWDATE = CONVERT(VARCHAR,@LD_NOWDATE,23)"
@@ -120,13 +121,14 @@ def auto_enroll(itemcode, autoqty, WorkerID):
         sql+= "  WHERE PLANTCODE = '1000'  "
         sql+= "    AND ReqDATE   = @LS_NOWDATE"
         sql+= ""
+        sql+= " SET @LS_PONO = 'PO' + CONVERT(VARCHAR,@LD_NOWDATE,112) + RIGHT('00000' + CONVERT(VARCHAR, @LI_ReqSEQ) ,4) "
         sql+= " SELECT @LS_UNITCODE = BASEUNIT"
         sql+= "       ,@LS_CUSTCODE = MAKECOMPANY"
         sql+= "   FROM TB_ItemMaster"
         sql+= f"  WHERE ITEMCODE = '{itemcode}'"
         sql+= ""
-        sql+= " INSERT INTO TB_OrderRequestList (PLANTCODE, ReqSEQ,     ReqDATE,     ITEMCODE, ReqQTY,   UNITCODE, CUSTCODE, ApprSTATUS, MAKER,     MAKEDATE, [O/W])  "
-        sql+= f"                           VALUES('1000'   , @LI_ReqSEQ, @LS_NOWDATE, '{itemcode}', {autoqty},    @LS_UNITCODE    , @LS_CUSTCODE,  'N'       , '{WorkerID}', @LD_NOWDATE, 'W')"
+        sql+= " INSERT INTO TB_OrderRequestList (PLANTCODE, ReqSEQ,     ReqDATE,     ITEMCODE, ReqQTY,   UNITCODE, CUSTCODE, ApprSTATUS, MAKER,     MAKEDATE, [O/W], PONO)  "
+        sql+= f"                           VALUES('1000'   , @LI_ReqSEQ, @LS_NOWDATE, '{itemcode}', {autoqty},    @LS_UNITCODE    , @LS_CUSTCODE,  'N'       , '{WorkerID}', @LD_NOWDATE, 'W', @LS_PONO)"
     cur.execute(sql)
     con.commit()
     con.close()
