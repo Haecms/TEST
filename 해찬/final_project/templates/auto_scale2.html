@@ -54,8 +54,6 @@
                 <span>창고: </span>
                 <select name="selected_option" id="select_value" onchange= "get_itemcode()">
                     <option value="none">---선택---</option>
-                    <!-- items : 창고 콤보박스에 채운 컬럼들 리스트 -->
-                    <!-- items2 : 작업자 콤보박스에 채운 컬럼들 리스트 -->
                     {% for i in range(0, items|length, 2) %}
                     <option id="{{ items[i+1] }}" value="{{items[i+1]}}">{{items[i]}}</option> 
                     {% endfor %}
@@ -78,18 +76,17 @@
             <div class="one_line">
                 {% for i in range(0, itemcode1|length) %}
                 <div class=" one_line_items">
-                    <img src="data:image/png;base64, {{itemcode1[i][4]}}">
-                    <div id = itemcode>품목 코드: {{itemcode1[i][0]}}</div>
-                    <div>현재 재고: {{itemcode1[i][1]}}</div>
-                    <div>안전 재고: {{itemcode1[i][2]}}</div>
-                    <div>자동 발주 수량: {{itemcode1[i][3]}}</div>
+                    <img src="data:image/jpg;base64,{{ itemcode1[i][0] }}" alt="Image">
+                    <div id = itemcode>품목 코드: {{ itemcode1[i][1] }}</div>
+                    <div>현재 재고: {{itemcode1[i][2]}}</div>
+                    <div>안전 재고: {{itemcode1[i][3]}}</div>
+                    <div>자동 발주 수량: {{itemcode1[i][4]}}</div>
                     <button id="{{itemcode1[i][0]}}" value="{{itemcode1[i][3]}}" onclick="auto_send()">자동 발주</button>
                 </div>
                 {% endfor %}
                 
             </div>
         </div>
-        
         <script>
             // 콤보박스 선택시 이벤트, itemcode를 클릭하면 itemname 등장
             function get_itemcode(){
@@ -114,18 +111,6 @@
                 let data = await response.json();
                 alert(data.message)
             }
-
-            function getBase64ImageA(imgsrc) {
-                // Create an empty canvas element
-                src = imgsrc
-                var baseStr64=`data:image/jpg;base64, ${src}`;
-                const img_ele = document.getElementById('img_ele');
-                img_ele.setAttribute('src', baseStr64);
-            }
-
-            
-            
-            
         </script>
     </body>
 </html>

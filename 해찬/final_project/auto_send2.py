@@ -18,30 +18,22 @@ def start():
         for i in range(len(current)):
             current_in =[]
             for j in range(len(current[i])):
-                if j != len(current[i]):
-                    try:
-                        current_in.append(format(int(current[i][j] ),',' ))
-                    except:
+                try:
+                    current_in.append(format(int(current[i][j] ),',' ))
+                except:
+                    if j == 0:
+                        try:
+                            image_base64 = base64.b64encode(current[i][j]).decode('utf-8')
+                            current_in.append(image_base64)
+                        except:
+                            current_in.append(current[i][j])
+                    else:
                         current_in.append(current[i][j])
-                else:
-                    try:
-                        pass
-                        # 여기서 current[i][4]에 담겨있는 바이너리 패스를 처리해야된다.
-                        src = current[i][j]
-                        binsrc_encode = src.encode()
-                        img_b64 = base64.b64encode(binsrc_encode)
-                        img_decode_ascii = img_b64.decode('ascii')
-                        current_in.append(img_decode_ascii)
-                    except:
-                        current_in.append('에러발생ㅠㅠ')
-                    
             current_change.append(current_in)
 
         plantcode = ["창고"]
         if selected_option != "none":
             plantcode = pb2.get_warehouse(selected_option)
-
-    # current_change(list(이중리스트)) : 
         return render_template("auto_scale2.html", items = rows, itemcode1 = current_change, items2 = rows2, plantcode = plantcode[0]) # 원자재창고 검색할 경우 6개가 나옴
     return render_template("auto_scale2.html", items = rows, items2 = rows2, plantcode=plantcode) 
 
