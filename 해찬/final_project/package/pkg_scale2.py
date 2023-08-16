@@ -46,7 +46,7 @@ def get_current(selected_option):
     con = con_open()
     cur=con.cursor()
     sql = ""
-    sql += "   SELECT A.ITEMCODE, B.CUR_STOCKQTY, A.SAFESTOCK, A.ORDERQTY"
+    sql += "   SELECT A.ITEMCODE, B.CUR_STOCKQTY, A.SAFESTOCK, A.ORDERQTY, A.IMGSRC"
     sql += "     FROM TB_ItemMaster A WITH(NOLOCK) JOIN (SELECT SUM(STOCKQTY) AS CUR_STOCKQTY"
     sql += "									             ,ITEMCODE"
     sql += "								    	     FROM TB_StockMM"
