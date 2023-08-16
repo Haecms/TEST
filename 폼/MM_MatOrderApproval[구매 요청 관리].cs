@@ -228,6 +228,10 @@ namespace KDTB_FORMS
                                                    , helper.CreateParameter("@DATE"     , sDate)
                                                    , helper.CreateParameter("@MAKER"   , sMaker));
                             }
+                            if (helper.RSCODE != "S")
+                            {
+                                row.RejectChanges();
+                            }
                             
                             break;
 
@@ -274,8 +278,8 @@ namespace KDTB_FORMS
                         return;
                     }
                 }
-                // helper.Commit();
-                helper.Rollback();
+                helper.Commit();
+                
                 ShowDialog("정상적으로 저장되었습니다.");
                 DoInquire();
             }
@@ -300,15 +304,15 @@ namespace KDTB_FORMS
             grid1.ActiveRow.Cells["MAKER"].Value     = LoginInfo.UserID;
             grid1.ActiveRow.Cells["CHK"].Value       = 0;
 
-            grid1.ActiveRow.Cells["PLANTCODE"].Activation = Activation.NoEdit;
-            grid1.ActiveRow.Cells["REQDATE"].Activation   = Activation.NoEdit;
-            grid1.ActiveRow.Cells["UNITCODE"].Activation  = Activation.NoEdit;
-            grid1.ActiveRow.Cells["CUSTNAME"].Activation  = Activation.NoEdit;
-            grid1.ActiveRow.Cells["APPRSTATUS"].Activation= Activation.NoEdit;
-            grid1.ActiveRow.Cells["MAKEDATE"].Activation  = Activation.NoEdit;
-            grid1.ActiveRow.Cells["MAKER"].Activation     = Activation.NoEdit;
-            grid1.ActiveRow.Cells["EDITOR"].Activation    = Activation.NoEdit;
-            grid1.ActiveRow.Cells["EDITDATE"].Activation  = Activation.NoEdit;
+            grid1.ActiveRow.Cells["PLANTCODE"].Activation  = Activation.NoEdit;
+            grid1.ActiveRow.Cells["REQDATE"].Activation    = Activation.NoEdit;
+            grid1.ActiveRow.Cells["UNITCODE"].Activation   = Activation.NoEdit;
+            grid1.ActiveRow.Cells["CUSTNAME"].Activation   = Activation.NoEdit;
+            grid1.ActiveRow.Cells["APPRSTATUS"].Activation = Activation.NoEdit;
+            grid1.ActiveRow.Cells["MAKEDATE"].Activation   = Activation.NoEdit;
+            grid1.ActiveRow.Cells["MAKER"].Activation      = Activation.NoEdit;
+            grid1.ActiveRow.Cells["EDITOR"].Activation     = Activation.NoEdit;
+            grid1.ActiveRow.Cells["EDITDATE"].Activation   = Activation.NoEdit;
         }
 
         public override void DoDelete()
@@ -332,8 +336,17 @@ namespace KDTB_FORMS
                     DataTable dtTemp = new DataTable();
                     dtTemp = helper.FillTable("_1JO_MM_MatOrderApproval_S2", CommandType.StoredProcedure
                                              , helper.CreateParameter("@ITEMCODE", sItemcode));
-                    grid1.ActiveRow.Cells["UNITCODE"].Value = dtTemp.Rows[0]["EA"].ToString();
-                    grid1.ActiveRow.Cells["CUSTNAME"].Value = dtTemp.Rows[0]["CUSTNAME"].ToString();
+                    if (dtTemp.Rows.Count > 0)
+                    {
+                        grid1.ActiveRow.Cells["UNITCODE"].Value = Convert.ToString(dtTemp.Rows[0]["EA"]);
+                        grid1.ActiveRow.Cells["CUSTNAME"].Value = Convert.ToString(dtTemp.Rows[0]["CUSTNAME"]);
+                    }
+                    else
+                    {
+                        grid1.ActiveRow.Cells["UNITCODE"].Value = "";
+                        grid1.ActiveRow.Cells["CUSTNAME"].Value = "";
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
