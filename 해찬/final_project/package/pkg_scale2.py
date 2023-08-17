@@ -103,8 +103,8 @@ def auto_enroll(itemcode, autoqty, WorkerID):
         sql+= "  FROM TB_ItemMaster"
         sql+= f" WHERE ITEMCODE = '{itemcode}'"
         sql+= ""
-        sql+= "  INSERT INTO TB_MaterialOrder (PLANTCODE,  PONO,     ITEMCODE,     PODATE,      POQTY,     UNITCODE,     MAKER,         MAKEDATE,    CUSTCODE,     POSEQ,   AORDERSTATUS) "
-        sql+= f"                        VALUES ('1000',    @LS_PONO, '{itemcode}', @LS_NOWDATE, {autoqty}, @LS_UNITCODE, '{WorkerID}',  @LD_NOWDATE, @LS_CUSTCODE, @LI_SEQ, 'Y') "
+        sql+= "  INSERT INTO TB_MaterialOrder (PLANTCODE,  PONO,     ITEMCODE,     PODATE,      POQTY,     UNITCODE,     MAKER,         MAKEDATE,    CUSTCODE,     POSEQ,   AORDERSTATUS, [O/W]) "
+        sql+= f"                        VALUES ('1000',    @LS_PONO, '{itemcode}', @LS_NOWDATE, {autoqty}, @LS_UNITCODE, '{WorkerID}',  @LD_NOWDATE, @LS_CUSTCODE, @LI_SEQ, 'Y', 'W') "
     else:   # TB_OrderRequestList에 insert 로직 시행
         sql+= " DECLARE @LD_NOWDATE DATETIME "
         sql+= "        ,@LS_NOWDATE VARCHAR(10) "
