@@ -42,12 +42,12 @@ namespace KDTB_FORMS
             
             _GridUtil.InitializeGrid(grid1);   // 싹 비우고 시작 Clear랑 같은 의미
             _GridUtil.InitColumnUltraGrid(grid1, "CHK"       , "승인"        , GridColDataType_emu.CheckBox    , 50 , HAlign.Left  , true, true);
-            _GridUtil.InitColumnUltraGrid(grid1, "PLANTCODE" , "공장"        , GridColDataType_emu.VarChar     , 130, HAlign.Left  , true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "PLANTCODE" , "공장"        , GridColDataType_emu.VarChar     , 130, HAlign.Left  , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "REQDATE"   , "요청일자"    , GridColDataType_emu.YearMonthDay, 130, HAlign.Center, true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "ITEMCODE"  , "품목"        , GridColDataType_emu.VarChar     , 200, HAlign.Left  , true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "REQQTY"    , "발주요청수량", GridColDataType_emu.Double      , 100, HAlign.Right , true, true);
-            _GridUtil.InitColumnUltraGrid(grid1, "UNITCODE"  , "단위"        , GridColDataType_emu.VarChar     , 100, HAlign.Center, true, false);
-            _GridUtil.InitColumnUltraGrid(grid1, "CUSTNAME"  , "거래처"      , GridColDataType_emu.VarChar     , 100, HAlign.Left  , true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "UNITCODE"  , "단위"        , GridColDataType_emu.VarChar     , 100, HAlign.Center, true, true);
+            _GridUtil.InitColumnUltraGrid(grid1, "CUSTNAME"  , "거래처"      , GridColDataType_emu.VarChar     , 100, HAlign.Left  , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "APPRSTATUS", "승인여부"    , GridColDataType_emu.VarChar     , 70,  HAlign.Center, true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "MAKER"     , "발주요청자"  , GridColDataType_emu.VarChar     , 130, HAlign.Center, true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "MAKEDATE"  , "요청일시"    , GridColDataType_emu.DateTime24  , 130, HAlign.Left  , true, false);
@@ -64,13 +64,14 @@ namespace KDTB_FORMS
             UltraGridUtil.SetComboUltraGrid(grid1, "PLANTCODE", dtTemp);
 
             // 협력업체 (거래처)
-            dtTemp = Common.GET_Cust_Code("V");                           
+            dtTemp = Common.GET_Cust_Code("");                           
             Common.FillComboboxMaster(cboCustCode, dtTemp);               
-            UltraGridUtil.SetComboUltraGrid(grid1, "CUSTCODE", dtTemp);   
+            UltraGridUtil.SetComboUltraGrid(grid1, "CUSTNAME", dtTemp);
 
             // 거래처
             dtTemp = Common.StandardCODE("UNITCODE");                     
-            UltraGridUtil.SetComboUltraGrid(grid1, "UNITCODE", dtTemp);   
+            UltraGridUtil.SetComboUltraGrid(grid1, "UNITCODE", dtTemp);
+
 
             // 발주 품목
             dtTemp = Common.Get_ItemCode(new string[] {"ROH"});           
@@ -214,6 +215,7 @@ namespace KDTB_FORMS
                                 helper.ExecuteNoneQuery("_1JO_MM_MatOrderApproval_U1", CommandType.StoredProcedure
                                                        , helper.CreateParameter("@DATE", sDate)
                                                        , helper.CreateParameter("@REQQTY", iPOQTY)
+                                                       , helper.CreateParameter("@CUSTNAME", sCustname)
                                                        , helper.CreateParameter("@EDITOR", sMaker));
                             }
                             else
@@ -306,8 +308,7 @@ namespace KDTB_FORMS
 
             grid1.ActiveRow.Cells["PLANTCODE"].Activation  = Activation.NoEdit;
             grid1.ActiveRow.Cells["REQDATE"].Activation    = Activation.NoEdit;
-            grid1.ActiveRow.Cells["UNITCODE"].Activation   = Activation.NoEdit;
-            grid1.ActiveRow.Cells["CUSTNAME"].Activation   = Activation.NoEdit;
+           
             grid1.ActiveRow.Cells["APPRSTATUS"].Activation = Activation.NoEdit;
             grid1.ActiveRow.Cells["MAKEDATE"].Activation   = Activation.NoEdit;
             grid1.ActiveRow.Cells["MAKER"].Activation      = Activation.NoEdit;
@@ -340,11 +341,11 @@ namespace KDTB_FORMS
                     {
                         grid1.ActiveRow.Cells["UNITCODE"].Value = Convert.ToString(dtTemp.Rows[0]["EA"]);
                         grid1.ActiveRow.Cells["CUSTNAME"].Value = Convert.ToString(dtTemp.Rows[0]["CUSTNAME"]);
+                        grid1.ActiveRow.Cells["REQQTY"].Value = Convert.ToString(dtTemp.Rows[0]["REQQTY"]);
                     }
                     else
                     {
-                        grid1.ActiveRow.Cells["UNITCODE"].Value = "";
-                        grid1.ActiveRow.Cells["CUSTNAME"].Value = "";
+                        
                     }
                     
                 }
