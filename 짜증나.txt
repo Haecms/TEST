@@ -1,0 +1,34 @@
+pip install pymssql 에러! 
+ERROR: Could not build wheels for pymssql which use PEP 517 and cannot be installed directly
+
+I'm trying to connect to SQL Server from Raspberry Pi 3. I've already tried everything that google search suggested and still can't manage to install pymssql using pip3.
+ --> sudo apt-get install libssl-dev
+
+If you want to install it for 3.8.2 and getting this error. You can try installing 2.2.7 version of pymssql
+ --> pip install pymssql==2.2.7
+
+
+
+you're missing some header (and likely library) files needed to build the extension.
+Unless you want to build from scratch, it'll probably be easier to get the suitable prebuilt wheel from Dave Gohlke's Windows wheels page and install it with Pip. Be sure to choose the correct file for your Python version and bitness.
+
+
+
+python -m pip install -U pip wheel setuptools
+--> 하고 나니까 에러 이름이 바뀜!
+--> Could not build wheels for pymssql, which is required to install pyproject.toml-based projects
+
+pip --no-cache-dir install pymssql
+--> 안됨
+--> Could not build wheels for pymssql, which is required to install pyproject.toml-based projects
+
+
+I was facing the same issue and my error was not installing the correct pymysql
+The documentation (https://pymysql.readthedocs.io/en/latest/user/installation.html) says that you should install
+>>> python3 -m pip install PyMySQL
+This worked for me
+--> 뭐지 이거 뭔가 설치됐음! -근데 안됨;
+
+미니콘다 깔아서 가상환경 구축해서 해보자.. 안됨! OS가 32비트라서 그런듯
+일단 OS를 64비트로 바꾼 뒤에 다시 시도해보자 .... ㅠㅠ
+https://github.com/conda-forge/miniforge/issues/440
