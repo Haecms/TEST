@@ -292,3 +292,53 @@ https://nate9389.tistory.com/2155
 https://m.blog.naver.com/heennavi1004/222119362920
 
 =>> 이거 두개 참고해서 하니까 바로 해결 됨 ! 뭐지
+----------------------------------------------------------------------------------------------------------------------------------
+그냥 gpt한테 전체 에러를 보여주는 게 편한거같다.. 괜히 해결해볼려다가 시간만 날려먹은 기분이다 
+해당 에러는 pymssql 라이브러리를 빌드하는 과정에서 필요한 의존성 라이브러리가 시스템에 설치되지 않아 발생한 것입니다. 특히 lgssapi_krb5와 lkrb5 라이브러리가 필요한데, 현재 시스템에 설치되지 않아서 빌드 과정이 실패하고 있습니다.
+
+이 문제를 해결하기 위해서는 해당 의존성 라이브러리를 시스템에 설치해야 합니다. 에러 메시지에서 보이는 두 라이브러리는 주로 Kerberos 라이브러리와 관련된 것으로 보이므로, 다음과 같은 방법을 시도해볼 수 있습니다:
+
+1. Kerberos 라이브러리 설치: Kerberos 라이브러리를 설치해보세요. 에러 메시지에서 참조하는 lgssapi_krb5와 lkrb5는 Kerberos 라이브러리와 관련된 라이브러리입니다.
+
+bash
+Copy code
+# Debian/Ubuntu 계열
+sudo apt-get install libkrb5-dev
+
+# CentOS/RHEL 계열
+sudo yum install krb5-devel
+설치 후 다시 pymssql를 설치해보세요.
+
+
+해당 에러는 pymssql 라이브러리를 빌드하는 과정에서 필요한 의존성 라이브러리가 시스템에 설치되지 않아 발생한 것입니다. 특히 lgssapi_krb5와 lkrb5 라이브러리가 필요한데, 현재 시스템에 설치되지 않아서 빌드 과정이 실패하고 있습니다.
+
+이 문제를 해결하기 위해서는 해당 의존성 라이브러리를 시스템에 설치해야 합니다. 에러 메시지에서 보이는 두 라이브러리는 주로 Kerberos 라이브러리와 관련된 것으로 보이므로, 다음과 같은 방법을 시도해볼 수 있습니다:
+
+Kerberos 라이브러리 설치: Kerberos 라이브러리를 설치해보세요. 에러 메시지에서 참조하는 lgssapi_krb5와 lkrb5는 Kerberos 라이브러리와 관련된 라이브러리입니다.
+
+bash
+Copy code
+# Debian/Ubuntu 계열
+sudo apt-get install libkrb5-dev
+
+# CentOS/RHEL 계열
+sudo yum install krb5-devel
+설치 후 다시 pymssql를 설치해보세요.
+
+2. FreeTDS 설치: pymssql는 FreeTDS 라이브러리에 의존하는 경우도 있습니다. FreeTDS가 설치되어 있는지 확인하고, 없다면 설치해보세요.
+
+bash
+Copy code
+# Debian/Ubuntu 계열
+sudo apt-get install freetds-dev
+
+# CentOS/RHEL 계열
+sudo yum install freetds-devel
+설치 후 다시 pymssql를 설치해보세요.
+
+위의 방법 중 하나를 시도해서 pymssql 설치 시에 필요한 의존성 라이브러리를 설치한 뒤에 다시 시도해보세요.
+
+
+
+
+
