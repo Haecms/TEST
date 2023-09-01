@@ -45,10 +45,11 @@
             Infragistics.Win.Appearance appearance14 = new Infragistics.Win.Appearance();
             Infragistics.Win.Appearance appearance12 = new Infragistics.Win.Appearance();
             Infragistics.Win.UltraWinSchedule.CalendarCombo.DateButton dateButton2 = new Infragistics.Win.UltraWinSchedule.CalendarCombo.DateButton();
-            Infragistics.Win.Appearance appearance2 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance22 = new Infragistics.Win.Appearance();
             Infragistics.Win.UltraWinSchedule.CalendarCombo.DateButton dateButton1 = new Infragistics.Win.UltraWinSchedule.CalendarCombo.DateButton();
             Infragistics.Win.Appearance appearance18 = new Infragistics.Win.Appearance();
             Infragistics.Win.Appearance appearance20 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance21 = new Infragistics.Win.Appearance();
             Infragistics.Win.Appearance appearance1 = new Infragistics.Win.Appearance();
             this.cboPlantCode = new Infragistics.Win.UltraWinEditors.UltraComboEditor();
             this.txtPono = new Infragistics.Win.UltraWinEditors.UltraTextEditor();
@@ -65,6 +66,8 @@
             this.cboItemCode = new Infragistics.Win.UltraWinEditors.UltraComboEditor();
             this.AORDER = new DC00_Component.SLabel();
             this.cboAOrderFlag = new Infragistics.Win.UltraWinEditors.UltraComboEditor();
+            this.sLabel7 = new DC00_Component.SLabel();
+            this.cboConfirm = new Infragistics.Win.UltraWinEditors.UltraComboEditor();
             ((System.ComponentModel.ISupportInitialize)(this.gbxHeader)).BeginInit();
             this.gbxHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gbxBody)).BeginInit();
@@ -77,6 +80,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtpEnd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboItemCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAOrderFlag)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboConfirm)).BeginInit();
             this.SuspendLayout();
             // 
             // gbxHeader
@@ -85,6 +89,8 @@
             this.gbxHeader.ContentPadding.Left = 2;
             this.gbxHeader.ContentPadding.Right = 2;
             this.gbxHeader.ContentPadding.Top = 4;
+            this.gbxHeader.Controls.Add(this.cboConfirm);
+            this.gbxHeader.Controls.Add(this.sLabel7);
             this.gbxHeader.Controls.Add(this.AORDER);
             this.gbxHeader.Controls.Add(this.cboAOrderFlag);
             this.gbxHeader.Controls.Add(this.cboItemCode);
@@ -278,12 +284,12 @@
             // 
             // sLabel4
             // 
-            appearance2.FontData.BoldAsString = "False";
-            appearance2.FontData.UnderlineAsString = "False";
-            appearance2.ForeColor = System.Drawing.Color.Black;
-            appearance2.TextHAlignAsString = "Right";
-            appearance2.TextVAlignAsString = "Middle";
-            this.sLabel4.Appearance = appearance2;
+            appearance22.FontData.BoldAsString = "False";
+            appearance22.FontData.UnderlineAsString = "False";
+            appearance22.ForeColor = System.Drawing.Color.Black;
+            appearance22.TextHAlignAsString = "Right";
+            appearance22.TextVAlignAsString = "Middle";
+            this.sLabel4.Appearance = appearance22;
             this.sLabel4.DbField = null;
             this.sLabel4.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.sLabel4.Location = new System.Drawing.Point(840, 87);
@@ -345,12 +351,12 @@
             // 
             // AORDER
             // 
-            appearance1.FontData.BoldAsString = "False";
-            appearance1.FontData.UnderlineAsString = "False";
-            appearance1.ForeColor = System.Drawing.Color.Black;
-            appearance1.TextHAlignAsString = "Right";
-            appearance1.TextVAlignAsString = "Middle";
-            this.AORDER.Appearance = appearance1;
+            appearance21.FontData.BoldAsString = "False";
+            appearance21.FontData.UnderlineAsString = "False";
+            appearance21.ForeColor = System.Drawing.Color.Black;
+            appearance21.TextHAlignAsString = "Right";
+            appearance21.TextVAlignAsString = "Middle";
+            this.AORDER.Appearance = appearance21;
             this.AORDER.DbField = null;
             this.AORDER.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AORDER.Location = new System.Drawing.Point(1027, 30);
@@ -366,6 +372,30 @@
             this.cboAOrderFlag.Name = "cboAOrderFlag";
             this.cboAOrderFlag.Size = new System.Drawing.Size(105, 35);
             this.cboAOrderFlag.TabIndex = 12;
+            // 
+            // sLabel7
+            // 
+            appearance1.FontData.BoldAsString = "False";
+            appearance1.FontData.UnderlineAsString = "False";
+            appearance1.ForeColor = System.Drawing.Color.Black;
+            appearance1.TextHAlignAsString = "Right";
+            appearance1.TextVAlignAsString = "Middle";
+            this.sLabel7.Appearance = appearance1;
+            this.sLabel7.DbField = null;
+            this.sLabel7.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.sLabel7.Location = new System.Drawing.Point(1052, 83);
+            this.sLabel7.Name = "sLabel7";
+            this.sLabel7.RequireFlag = DC00_Component.SLabel.RequireFlagEnum.NO;
+            this.sLabel7.Size = new System.Drawing.Size(88, 23);
+            this.sLabel7.TabIndex = 14;
+            this.sLabel7.Text = "확정여부";
+            // 
+            // cboConfirm
+            // 
+            this.cboConfirm.Location = new System.Drawing.Point(1146, 75);
+            this.cboConfirm.Name = "cboConfirm";
+            this.cboConfirm.Size = new System.Drawing.Size(105, 35);
+            this.cboConfirm.TabIndex = 15;
             // 
             // MM_MaterialOrder
             // 
@@ -386,6 +416,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtpEnd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboItemCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAOrderFlag)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboConfirm)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -407,5 +438,7 @@
         private DC00_Component.SLabel sLabel6;
         private DC00_Component.SLabel AORDER;
         private Infragistics.Win.UltraWinEditors.UltraComboEditor cboAOrderFlag;
+        private Infragistics.Win.UltraWinEditors.UltraComboEditor cboConfirm;
+        private DC00_Component.SLabel sLabel7;
     }
 }

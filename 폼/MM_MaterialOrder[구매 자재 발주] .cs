@@ -20,7 +20,7 @@ using System.Windows.Forms;
  * 2023 8 14 월 - 조회 가능
  * 2023 8 15 화 - 행 선택하고 삭제 버튼 클릭 후 저장도 가능
  * 2023 8 16 수 - 추가 버튼 클릭 후 저장도 가능
- * 
+ * 2023 8 1
  * 
  * ***********************************************************************************************************/
 
@@ -44,11 +44,12 @@ namespace KDTB_FORMS
             _GridUtil.InitColumnUltraGrid(grid1, "ITEMCODE" , "품목"    , GridColDataType_emu.VarChar        , 200, HAlign.Left , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "PODATE"   , "발주일자", GridColDataType_emu.YearMonthDay   , 100, HAlign.Left , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "POQTY"    , "발주수량", GridColDataType_emu.Double         , 100, HAlign.Right, true, true);
+            _GridUtil.InitColumnUltraGrid(grid1, "INPUTQTY", "입고수량", GridColDataType_emu.Integer,          130, HAlign.Right, true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "UNITCODE" , "단위"    , GridColDataType_emu.VarChar        , 100, HAlign.Left , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "CUSTCODE" , "거래처"  , GridColDataType_emu.VarChar        , 180, HAlign.Left , true, true);
 
             _GridUtil.InitColumnUltraGrid(grid1, "AORDERSTATUS", "자동발주여부", GridColDataType_emu.VarChar, 100, HAlign.Center, true, false);
-
+            //_GridUtil.InitColumnUltraGrid(grid1, "CONFIRM", "확정여부", GridColDataType_emu.VarChar, 100, HAlign.Center, true, false);
             //_GridUtil.InitColumnUltraGrid(grid1, "CHK"      , "입고등록", GridColDataType_emu.CheckBox       , 80 , HAlign.Left , true, true);
             //_GridUtil.InitColumnUltraGrid(grid1, "INQTY"    , "입고수량", GridColDataType_emu.Double         , 100, HAlign.Right, true, true);
             //                                                                                                 
@@ -62,6 +63,7 @@ namespace KDTB_FORMS
             _GridUtil.InitColumnUltraGrid(grid1, "MAKER"    , "등록자"  , GridColDataType_emu.VarChar        , 130, HAlign.Left  , true, false);
             //_GridUtil.InitColumnUltraGrid(grid1, "EDITDATE" , "수정일시", GridColDataType_emu.DateTime24     , 130, HAlign.Center, true, false);
             //_GridUtil.InitColumnUltraGrid(grid1, "EDITOR"   , "수정자"  , GridColDataType_emu.VarChar        , 130, HAlign.Left  , true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "CONFIRM", "확정여부", GridColDataType_emu.VarChar, 100, HAlign.Center, true, false);
             _GridUtil.SetInitUltraGridBind(grid1); // 디스플레이랑 ?을 실시간으로 바인딩
 
             // 콤보박스 셋팅
@@ -75,6 +77,11 @@ namespace KDTB_FORMS
             // 자동 발주 여부
             dtTemp = Common.StandardCODE("AORDERSTATUS");
             Common.FillComboboxMaster(cboAOrderFlag, dtTemp);
+
+            // 확정 여부
+            dtTemp = Common.StandardCODE("AORDERSTATUS");
+            Common.FillComboboxMaster(cboConfirm, dtTemp);
+           // UltraGridUtil.SetComboUltraGrid(grid1, "CONFIRM", dtTemp);
 
             // 협력업체 (거래처)
             dtTemp = Common.GET_Cust_Code("V");                           
@@ -105,6 +112,7 @@ namespace KDTB_FORMS
             string sPono       = Convert.ToString(txtPono.Text);                  // 발주번호
             string sItemCode   = Convert.ToString(cboItemCode.Value);             // 품목 코드
             string sAorderFlag = Convert.ToString(cboAOrderFlag.Value); // 자동 발주 여부
+            string sConfirm = Convert.ToString(cboConfirm.Value); // 확정 여부
 
             DBHelper helper = new DBHelper(false);
             try
@@ -119,6 +127,8 @@ namespace KDTB_FORMS
                                          , helper.CreateParameter("@ENDDATE"  , sEndDate) // 등록 종료일
                                          , helper.CreateParameter("@PONO"     , sPono) // 발주 번호
                                          , helper.CreateParameter("@ITEMCODE" , sItemCode) // 품목 코드
+                                         , helper.CreateParameter("@CONFIRM", sConfirm) // 확정 여부
+
                                          , helper.CreateParameter("@AORDERSTATUS", sAorderFlag)); // 자동 발주 여부
                 grid1.DataSource = dtTemp;
                 if (grid1.Rows.Count == 0)
@@ -225,9 +235,11 @@ namespace KDTB_FORMS
                                                     helper.CreateParameter("@PLANTCODE", Convert.ToString(row["PLANTCODE"])), // 공장
                                                     helper.CreateParameter("@PONO", Convert.ToString(row["PONO"])), // 발주 번호
                                                     helper.CreateParameter("@POQTY", Convert.ToString(row["POQTY"])), // 발주 수량
-                                                    helper.CreateParameter("@MAKEDATE", Convert.ToString(row["MAKER"])), // 등록일
-                                                    helper.CreateParameter("@ITEMCODE", Convert.ToString(row["ITEMCODE"])),
+                                                    helper.CreateParameter("@MAKEDATE", Convert.ToString(row["MAKER"])), // 등록일 
+                                                    helper.CreateParameter("@ITEMCODE", Convert.ToString(row["ITEMCODE"])), // 품목코드
                                                     helper.CreateParameter("@MAKER", LoginInfo.UserID)); // 등록자
+                                                    
+                                                    //helper.CreateParameter("@ITEMCODE", Convert.ToString(row["ITEMCODE"]))); // 품목코드
                                                     //helper.CreateParameter("@ITEMCODE", Convert.ToString(row["ITEMCODE"]));
                                                     //helper.CreateParameter("@INQTY", Convert.ToString(row["INQTY"]).Replace(",", "")), // 입고수량
                                                     //helper.CreateParameter("@INWORKER", LoginInfo.UserID)); // 입고자

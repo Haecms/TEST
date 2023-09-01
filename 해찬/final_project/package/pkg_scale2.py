@@ -125,8 +125,8 @@ def auto_enroll(itemcode, autoqty, WorkerID):
         sql+= "   FROM TB_ItemMaster"
         sql+= f"  WHERE ITEMCODE = '{itemcode}'"
         sql+= ""
-        sql+= " INSERT INTO TB_OrderRequestList (PLANTCODE, ReqSEQ,     ReqDATE,     ITEMCODE, ReqQTY,   UNITCODE, CUSTCODE, ApprSTATUS, MAKER,     MAKEDATE, [O/W])  "
-        sql+= f"                           VALUES('1000'   , @LI_ReqSEQ, @LS_NOWDATE, '{itemcode}', {autoqty},    @LS_UNITCODE    , @LS_CUSTCODE,  'N'       , '{WorkerID}', @LD_NOWDATE, 'W')"
+        sql+= " INSERT INTO TB_OrderRequestList (PLANTCODE, ReqSEQ,     ReqDATE,     ITEMCODE,     ReqQTY,    UNITCODE,     CUSTCODE,      ApprSTATUS, MAKER,     MAKEDATE, [O/W])  "
+        sql+= f"                          VALUES('1000'   , @LI_ReqSEQ, @LS_NOWDATE, '{itemcode}', {autoqty}, @LS_UNITCODE, @LS_CUSTCODE,  'N'       , '{WorkerID}', @LD_NOWDATE, 'W')"
     cur.execute(sql)
     con.commit()
     con.close()
