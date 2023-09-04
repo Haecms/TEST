@@ -53,6 +53,7 @@ namespace KDTB_FORMS
             _GridUtil.InitColumnUltraGrid(grid1, "MAKEDATE"  , "요청일시"    , GridColDataType_emu.DateTime24  , 130, HAlign.Left  , true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "EDITOR"    , "수정자"      , GridColDataType_emu.VarChar     , 130, HAlign.Center, true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "EDITDATE"  , "수정일시"    , GridColDataType_emu.DateTime24  , 130, HAlign.Left  , true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "O/W"       , "발주장소"    , GridColDataType_emu.VarChar     , 80,  HAlign.Left  , false, false);
             _GridUtil.SetInitUltraGridBind(grid1);
 
             // 콤보박스 셋팅
@@ -116,6 +117,8 @@ namespace KDTB_FORMS
                                          , helper.CreateParameter("@ENDDATE"  , sEndDate)
                                          , helper.CreateParameter("@APPRSTAT" , sApprstat));
                 grid1.DataSource = dtTemp;
+                
+                
                 if (grid1.Rows.Count == 0)
                 {
                     ClosePrgForm(); //프로그레스 상태 창 닫기
@@ -171,6 +174,7 @@ namespace KDTB_FORMS
             string sUnitcode  = string.Empty;
             string sCustname  = string.Empty;
             string sMaker     = string.Empty;
+            string sOW        = string.Empty;
             int    iPOQTY;
             
             try
@@ -208,7 +212,8 @@ namespace KDTB_FORMS
                             iPOQTY    = Convert.ToInt32(row["REQQTY"]);
                             sUnitcode = Convert.ToString(row["UNITCODE"]);
                             sCustname = Convert.ToString(row["CUSTNAME"]);
-                            sDate = Convert.ToDateTime(row["MAKEDATE"]);
+                            sDate     = Convert.ToDateTime(row["MAKEDATE"]);
+                            sOW       = Convert.ToString(row["O/W"]);
                             if (Convert.ToInt32(row["CHK"]) == 0)
                             {
                                 helper.ExecuteNoneQuery("_1JO_MM_MatOrderApproval_U1", CommandType.StoredProcedure
@@ -226,7 +231,8 @@ namespace KDTB_FORMS
                                                    , helper.CreateParameter("@UNITCODE" , sUnitcode)
                                                    , helper.CreateParameter("@CUSTNAME" , sCustname)
                                                    , helper.CreateParameter("@DATE"     , sDate)
-                                                   , helper.CreateParameter("@MAKER"   , sMaker));
+                                                   , helper.CreateParameter("@MAKER"    , sMaker)
+                                                   , helper.CreateParameter("@OW"       , sOW));
                             }
                             if (helper.RSCODE != "S")
                             {
@@ -251,6 +257,7 @@ namespace KDTB_FORMS
                                 ShowDialog(sMessage + "를 입력해주세요.");
                                 return;
                             }
+                            row["O/W"] = "O";
 
                             string sReqdate = Convert.ToString(row["REQDATE"]);
                             string sCHK = Convert.ToString(row["CHK"]);
@@ -258,6 +265,7 @@ namespace KDTB_FORMS
                             iPOQTY    = Convert.ToInt32(row["REQQTY"]);
                             sUnitcode = Convert.ToString(row["UNITCODE"]);
                             sCustname = Convert.ToString(row["CUSTNAME"]);
+                            sOW       = Convert.ToString(row["O/W"]);
 
                             helper.ExecuteNoneQuery("_1JO_MM_MatOrderApproval_I1", CommandType.StoredProcedure
                                                    , helper.CreateParameter("@PLANTCODE", sPlantcode)
@@ -267,7 +275,8 @@ namespace KDTB_FORMS
                                                    , helper.CreateParameter("@UNITCODE" , sUnitcode)
                                                    , helper.CreateParameter("@CUSTNAME" , sCustname)
                                                    , helper.CreateParameter("@CHK"      , sCHK)
-                                                   , helper.CreateParameter("@MAKER"    , sMaker));
+                                                   , helper.CreateParameter("@MAKER"    , sMaker)
+                                                   , helper.CreateParameter("@OW"       , sOW));
                             break;
                     }
 
@@ -324,7 +333,7 @@ namespace KDTB_FORMS
         {
             if (null != e.Cell.Column.ValueList)
             {
-                // e.Cell.Text ==> "[KDTB02-ROH] 베어링 볼"
+                // e.Cell.Text ==> "[KDTB02-ROH] 베어링 볼"을 가공해서 ITEMCODE만 뽑아오게
                 string sCellValue = e.Cell.Text;
                 int iSindex = sCellValue.IndexOf('[');
                 int iFindex = sCellValue.IndexOf(']');

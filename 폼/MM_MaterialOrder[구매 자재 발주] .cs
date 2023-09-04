@@ -43,8 +43,8 @@ namespace KDTB_FORMS
             _GridUtil.InitColumnUltraGrid(grid1, "PONO"     , "발주번호", GridColDataType_emu.VarChar        , 130, HAlign.Left , true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "ITEMCODE" , "품목"    , GridColDataType_emu.VarChar        , 200, HAlign.Left , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "PODATE"   , "발주일자", GridColDataType_emu.YearMonthDay   , 100, HAlign.Left , true, true);
-            _GridUtil.InitColumnUltraGrid(grid1, "POQTY"    , "발주수량", GridColDataType_emu.Double         , 100, HAlign.Right, true, true);
-            _GridUtil.InitColumnUltraGrid(grid1, "INPUTQTY", "입고수량", GridColDataType_emu.Integer,          130, HAlign.Right, true, false);
+            _GridUtil.InitColumnUltraGrid(grid1, "POQTY"    , "발주수량", GridColDataType_emu.Double         , 90, HAlign.Right, true, true);
+            _GridUtil.InitColumnUltraGrid(grid1, "INPUTQTY", "입고수량", GridColDataType_emu.Integer,          90, HAlign.Right, true, false);
             _GridUtil.InitColumnUltraGrid(grid1, "UNITCODE" , "단위"    , GridColDataType_emu.VarChar        , 100, HAlign.Left , true, true);
             _GridUtil.InitColumnUltraGrid(grid1, "CUSTCODE" , "거래처"  , GridColDataType_emu.VarChar        , 180, HAlign.Left , true, true);
 

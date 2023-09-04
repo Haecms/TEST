@@ -63,7 +63,6 @@
             this.sLabel5 = new DC00_Component.SLabel();
             this.sLabel6 = new DC00_Component.SLabel();
             this.cboItemCode = new Infragistics.Win.UltraWinEditors.UltraComboEditor();
-            this.btnAppr = new System.Windows.Forms.Button();
             this.sLabel7 = new DC00_Component.SLabel();
             this.cboApprstat = new Infragistics.Win.UltraWinEditors.UltraComboEditor();
             ((System.ComponentModel.ISupportInitialize)(this.gbxHeader)).BeginInit();
@@ -88,7 +87,6 @@
             this.gbxHeader.ContentPadding.Top = 4;
             this.gbxHeader.Controls.Add(this.cboApprstat);
             this.gbxHeader.Controls.Add(this.sLabel7);
-            this.gbxHeader.Controls.Add(this.btnAppr);
             this.gbxHeader.Controls.Add(this.cboItemCode);
             this.gbxHeader.Controls.Add(this.sLabel6);
             this.gbxHeader.Controls.Add(this.sLabel5);
@@ -346,15 +344,6 @@
             this.cboItemCode.Size = new System.Drawing.Size(407, 35);
             this.cboItemCode.TabIndex = 11;
             // 
-            // btnAppr
-            // 
-            this.btnAppr.Location = new System.Drawing.Point(1165, 64);
-            this.btnAppr.Name = "btnAppr";
-            this.btnAppr.Size = new System.Drawing.Size(126, 49);
-            this.btnAppr.TabIndex = 12;
-            this.btnAppr.Text = "발주 승인";
-            this.btnAppr.UseVisualStyleBackColor = true;
-            // 
             // sLabel7
             // 
             appearance6.FontData.BoldAsString = "False";
@@ -417,7 +406,6 @@
         private DC00_Component.SLabel sLabel4;
         private Infragistics.Win.UltraWinEditors.UltraComboEditor cboItemCode;
         private DC00_Component.SLabel sLabel6;
-        private System.Windows.Forms.Button btnAppr;
         private DC00_Component.SLabel sLabel7;
         private Infragistics.Win.UltraWinEditors.UltraComboEditor cboApprstat;
     }
